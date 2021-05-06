@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">vocabularyEnRu</string>
+    <string name="vocabulary_name">Англо-русский словарь!</string>
+    <string name="eng_voc">Англо-Русский словарь</string>
+    <string name="rus_voc">Русско-Английский словарь</string>
+    <string name="menu_exit">Выход</string>
+    <string name="note">Поиск</string>
+    <string name="letter">Буква</string>
+    <string name="word_text">Слово</string>
+    <string name="voc_text">Перевод</string>
+    <string name="your_word">Новое слово</string>
+    <string name="text_edit_text">Новое слово</string>
+    <string name="voc_edit_text">Перевод</string>
+    <string name="buttonSave">Сохранить</string>
+</resources>

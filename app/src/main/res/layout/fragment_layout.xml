@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_fragment_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:orientation="vertical"
+    android:weightSum="10">
+    <TextView
+        android:id="@+id/vocabularyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vocabulary_name"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/notesRelativeLayout"
+        />
+
+    <RelativeLayout
+        android:id="@+id/notesRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/vocabularyName"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/notesImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/rus" />
+
+        <com.firsset.vocabularyenru.InstantAutoComplete
+            android:id="@+id/descriptionAutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/notesImageView"
+            android:layout_toLeftOf="@+id/plusImageView"
+            android:background="@null"
+            android:dropDownAnchor="@+id/line"
+            android:dropDownHorizontalOffset="2dp"
+            android:dropDownVerticalOffset="2dp"
+            android:hint="@string/note"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLength="100"
+            android:overScrollMode="always"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:state_focused="true"
+            android:textColorHint="#d8d8d8" />
+        <ImageView
+            android:id="@+id/plusImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="35dp"
+
+            android:layout_alignParentRight="true"
+            android:src="@drawable/plus" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/historyLinearLayout0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/id_fragment_layout"
+
+        app:layout_constraintStart_toStartOf="@+id/id_fragment_layout"
+        app:layout_constraintTop_toBottomOf="@+id/notesRelativeLayout">
+
+
+        <LinearLayout
+            android:id="@+id/historyLinearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/id_fragment_layout"
+            app:layout_constraintTop_toBottomOf="@+id/historyTextEditResult">
+
+            <TextView
+                android:id="@+id/idLetter"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="0.2"
+                android:text="@string/letter"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/idWord"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_weight="0.3"
+                android:text="@string/word_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/idVoc"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="start"
+                android:text="@string/voc_text"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/historyLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:fadeScrollbars="true"
+                android:scrollbars="vertical"
+                app:layoutManager="LinearLayoutManager" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
