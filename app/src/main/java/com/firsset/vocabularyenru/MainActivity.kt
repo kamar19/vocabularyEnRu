@@ -1,8 +1,5 @@
 package com.firsset.vocabularyenru
 
-import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,6 +7,8 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commitNow
+import com.firsset.vocabul.FragmentWord
 import com.firsset.vocabularyenru.data.models.Word
 import com.firsset.vocabularyenru.data.repository.WordRepository
 import com.firsset.vocabularyenru.data.storage.RepositoryDB
@@ -17,6 +16,7 @@ import com.firsset.vocabularyenru.data.storage.WordDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
     private var findText: InstantAutoComplete? = null
@@ -34,33 +34,47 @@ class MainActivity : AppCompatActivity() {
         wordDatabase = WordDatabase.createWordDatabaseInstance(this)
         repositoryDB = RepositoryDB(wordDatabase)
         coroutineScope.launch {
-            words = repositoryDB.readWordsFromDb("rus")
+            openDB("rus")
+            saveIntoRep()
 
-            if (words == null) {
+            findText = findViewById(R.id.descriptionAutoCompleteTextView)
+//            if (savedInstanceState == null) {
+//                fragmentManager = supportFragmentManager
+//                fragmentManager!!.beginTransaction()
+//                    .replace(R.id.main_layout, FragmentWord.newInstance(vocType), FRAGMENT_ONE)
+//                    .commit()
+//            }
+            if (savedInstanceState == null) {
+                supportFragmentManager.commitNow {
+                    replace(
+                        R.id.main_layout,
+                        FragmentWord.newInstance(vocType),
+                        FRAGMENT_ONE
+                    )
+                }
+            }
+
+        }
+
+    }
+
+    public fun saveIntoRep() {
+        if (words != null) {
+            if (words!!.size <= 0) {
                 var tempWords: List<Word> = WordRepository().getWordList(vocType)
                 Log.d("words is not db ", tempWords.size.toString())
                 words = tempWords
                 coroutineScope.launch {
                     words?.let { repositoryDB.saveWordsToDB(it) }
                 }
-
             } else {
                 words?.let {
                     Log.d("words in db", it.size.toString())
                 }
             }
-
-            findText = findViewById(R.id.descriptionAutoCompleteTextView)
-            if (savedInstanceState == null) {
-                fragmentManager = supportFragmentManager
-                fragmentManager!!.beginTransaction()
-                    .replace(R.id.main_layout, FragmentWord.newInstance(vocType), FRAGMENT_ONE)
-                    .commit()
-            }
         }
 
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -81,6 +95,9 @@ class MainActivity : AppCompatActivity() {
     var listItems2: java.util.ArrayList<String>? = null
     var adapter2: ArrayAdapter<Word>? = null
 
+    suspend fun openDB(vocType: String) {
+        words = repositoryDB.readWordsFromDb(vocType)
+    }
 //    fun openOneFragment(vocType: String) {
 //        supportFragmentManager.popBackStack(FRAGMENT_TAG_MOVIES_DETAILS, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //        supportFragmentManager.commit {
@@ -164,7 +181,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         val FRAGMENT_ONE = "FRAGMENT_ONE"
-        val FRAGMENT_TWO = "FRAGMENT_TWO"
         var words: List<Word>? = null
 
     }

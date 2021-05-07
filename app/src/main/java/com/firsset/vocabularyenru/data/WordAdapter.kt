@@ -20,7 +20,7 @@ class WordAdapter(
     RecyclerView.Adapter<WordAdapter.WordViewHolder>(),
     View.OnClickListener {
     private val inflater: LayoutInflater
-    private var listWords: List<Word>
+    var listWords: List<Word>
     var itemClickListener: OnItemClickListener
     var currentPos: Int = 0
 

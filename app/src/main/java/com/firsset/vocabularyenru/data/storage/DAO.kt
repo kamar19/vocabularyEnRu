@@ -14,7 +14,7 @@ interface WordDAO {
     suspend fun insertWord(word: Word)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertWords(users: List<Word>)
+    suspend fun insertWords(words: List<Word>)
 
 
 }

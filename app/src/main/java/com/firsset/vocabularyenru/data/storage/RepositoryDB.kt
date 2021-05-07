@@ -25,6 +25,8 @@ class RepositoryDB(val wordDatabase: WordDatabase) {
     }
 
     suspend fun saveWordToDB(word: Word) {
+        Log.d("saveWordToDB", word.id.toString()+" - "+word.word+" - "+word.vocType)
+
         withContext(Dispatchers.IO) {
             localDataStore.insertWord(word)
         }

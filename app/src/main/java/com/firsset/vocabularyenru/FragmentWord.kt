@@ -1,10 +1,17 @@
-package com.firsset.vocabularyenru
+package com.firsset.vocabul
 
+import com.firsset.vocabularyenru.FragmentEdit
+import com.firsset.vocabularyenru.MainActivity
+import com.firsset.vocabularyenru.R
+
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Adapter
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firsset.vocabularyenru.data.WordAdapter
@@ -13,6 +20,7 @@ import com.firsset.vocabularyenru.data.storage.RepositoryDB
 import com.firsset.vocabularyenru.data.storage.WordDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class FragmentWord : Fragment(),
@@ -21,13 +29,14 @@ class FragmentWord : Fragment(),
     var wordList: List<Word> = ArrayList<Word>()
     var vocType: String = "rus"
     var recyclerView: RecyclerView? = null
+    lateinit var adapter :WordAdapter
 
     //    var button: Button? = null
     var savedInstanceState: Bundle? = null
     lateinit var repositoryDB: RepositoryDB
     lateinit var wordDatabase: WordDatabase
     var coroutineScope = CoroutineScope(Dispatchers.Main)
-    lateinit var imageView: ImageView
+    lateinit var imageView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +44,7 @@ class FragmentWord : Fragment(),
             this.savedInstanceState = savedInstanceState
         }
         retainInstance = true
+        Log.d("callFragmentEdit", "10")
 
 
     }
@@ -44,10 +54,12 @@ class FragmentWord : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         arguments?.let { vocType = it.getString(KEY_PARSE_DATA, "rus") }
+        Log.d("callFragmentEdit", "20")
 
         return inflater.inflate(R.layout.fragment_layout, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?
@@ -69,23 +81,33 @@ class FragmentWord : Fragment(),
 //                Log.d("word in Frag", wordLists.transfer)
 //                Log.d("word in Frag", wordLists.vocType)
 //            }
+        Log.d("callFragmentEdit", "00")
 
-        imageView =  view.findViewById<ImageView>(R.id.plusImageView)
-        imageView.setOnClickListener{
-            if (vocType.equals("rus"))
-            {
-                vocType="eng"
-
-            } else {
-                vocType = "rus"
+        imageView = view.findViewById<View>(R.id.plusImageView).apply {
+            setOnClickListener {
+                callFragmentEdit(0, "", "", vocType)
             }
-            callFragmentEdit(id: Long, viewWord: View)
+        }
+        imageView = view.findViewById<View>(R.id.notesImageView).apply {
+            setOnClickListener {
+                if (vocType.equals("rus")) {
+                    vocType = "eng"
+                } else {
+                    vocType = "rus"
+                }
+                Log.d("callFragmentEdit_10", vocType)
+                coroutineScope.launch {
+                    MainActivity.words = repositoryDB.readWordsFromDb(vocType)
+                    adapter.listWords = MainActivity.words!!
+                    adapter.notifyDataSetChanged()
+                }
+            }
         }
 
 //        locationRepository = WordDatabase.instance
 //        initialData()
         recyclerView = view.findViewById(R.id.listRecycler)
-        var adapter = WordAdapter(context, wordList, this)
+        adapter = WordAdapter(context, wordList, this)
 //        recyclerView?.setLayoutManager(
 //            LinearLayoutManager(
 //                activity,
@@ -100,35 +122,6 @@ class FragmentWord : Fragment(),
 //        }
     }
 
-
-    private fun initialData() {
-//        wordList = locationRepository?.wordDAO?.getAllWordsFromType("rus")!!
-//        if (wordList.size > 0) {
-//            wordList.clear()
-//            for (i in wordList.indices) {
-//                val trackSummary = TrackSummary(
-//                    locationUserList[i].track,
-//                    locationUserList[i].id,
-//                    locationUserList[i].time
-//                )
-//                trackSummaryList.add(trackSummary)
-//            }
-//        }
-    }
-
-
-//   fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-////        val item: String = trackSummaryList[position].getDate()
-////        val polylineOptions = PolylineOptions()
-////        MainActivity.fragmentManager.popBackStack()
-////        MyMapFragment.listLocationUser =
-////            locationRepository.readLocation(trackSummaryList[position].getIdTrack())
-////        Log.v(
-////            "getIdTrack",
-////            java.lang.String.valueOf(trackSummaryList[position].getIdTrack())
-////        )
-//    }
-
     override fun onClick(v: View?) {
 //          switch (v.getId()) {
 //              case R . id . buttonDigit1 :
@@ -138,22 +131,49 @@ class FragmentWord : Fragment(),
 //              textViewAnswer
 //          }
     }
+//    var fragmentManager: FragmentManager? = null
 
-    fun callFragmentEdit(id: Long, viewWord: View) {
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun callFragmentEdit(
+        id: Int,
+        wordEdit: String,
+        vocEditString: String,
+        vocTypeString: String
+    ) {
+        var tempWords: List<Word>? = MainActivity.words
+        var idMax:Int = 0
+
+        if (id <= 0) {
+            if (tempWords != null) {
+                for (i in tempWords) {
+                    if (i.id>idMax) {
+                        idMax = i.id
+                    }
+                }
+
+                Log.d("callFragmentEdit_max", idMax.toString())
+            }
+
+        }
+        Log.d("callFragmentEdit", "50")
         activity?.let {
-            it.supportFragmentManager.findFragmentByTag(MainActivity.FRAGMENT_TWO)
+            it.supportFragmentManager.findFragmentByTag(FRAGMENT_TWO)
             it.supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_layout, FragmentEdit.newInstance(id))
-
-                .addToBackStack(MainActivity.FRAGMENT_TWO)
+                .replace(
+                    R.id.main_layout,
+                    FragmentEdit.newInstance(idMax, wordEdit, vocEditString, vocTypeString)
+                )
+                .addToBackStack(FRAGMENT_TWO)
                 .commit()
         }
-
     }
 
     companion object {
         const val KEY_PARSE_DATA = "VOC_TYPE"
+        val FRAGMENT_TWO = "FRAGMENT_TWO"
+
         fun newInstance(vocType: String) = FragmentWord().apply {
             arguments = Bundle().apply {
                 putString(KEY_PARSE_DATA, vocType)
@@ -161,7 +181,9 @@ class FragmentWord : Fragment(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onItemClick(position: Int) {
-        TODO("Not yet implemented")
+        val word:Word? = MainActivity.words?.get(position)
+        word?.let { callFragmentEdit(it.id,it.word,it.transfer,it.vocType) }
     }
 }
