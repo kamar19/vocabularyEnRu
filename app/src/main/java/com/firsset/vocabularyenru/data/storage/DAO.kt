@@ -8,13 +8,13 @@ import com.firsset.vocabularyenru.data.models.Word
 interface WordDAO {
 
     @Query("SELECT * FROM vocAll where vocType=:vocType")
-    fun getAllWordsFromType(vocType:String): List<Word>
+    fun getAllWordsFromType(vocType:String): MutableList<Word>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertWord(word: Word)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertWords(words: List<Word>)
+    suspend fun insertWords(words: MutableList<Word>)
 
 
 }

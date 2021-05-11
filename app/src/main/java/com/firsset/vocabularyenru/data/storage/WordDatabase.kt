@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.firsset.vocabularyenru.data.models.Word
 
 
-@Database(entities = [Word::class], version = 1)
+@Database(entities = [Word::class], version = 3)
 abstract class WordDatabase : RoomDatabase() {
         abstract val wordDAO: WordDAO
 

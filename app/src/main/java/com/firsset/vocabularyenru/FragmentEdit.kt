@@ -7,11 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import com.firsset.vocabul.FragmentWord
 import com.firsset.vocabularyenru.data.models.Word
 import com.firsset.vocabularyenru.data.storage.RepositoryDB
 import com.firsset.vocabularyenru.data.storage.WordDatabase
@@ -36,9 +33,6 @@ class FragmentEdit : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        Log.d("callFragmentEdit", "100")
-
-
     }
 
     override fun onCreateView(
@@ -46,16 +40,11 @@ class FragmentEdit : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         arguments?.let {
-            Log.d("callFragmentEdit", "101")
-
             idWord = it.getInt(KEY_PARSE_ID, 0)
             wordEditString = it.getString(KEY_PARSE_WORD, "word")
             vocTypeString = it.getString(KEY_PARSE_TYPE, "rus")
             vocEditString = it.getString(KEY_PARSE_VOC, "слово")
-
         }
-
-
         return inflater.inflate(R.layout.fragment_edit, container, false)
     }
 
@@ -70,7 +59,6 @@ class FragmentEdit : Fragment() {
         vocEditText.setText(vocEditString)
         wordDatabase = WordDatabase.createWordDatabaseInstance(view.context)
         repositoryDB = RepositoryDB(wordDatabase)
-
 
         if (idWord > 0) {
             buttonSave.visibility = View.VISIBLE
@@ -89,21 +77,13 @@ class FragmentEdit : Fragment() {
                         vocEditText.text.toString(),
                         vocTypeString
                     )
-                    Log.d("callFragmentEdit", tempWord.toString())
-
                     repositoryDB.saveWordToDB(tempWord)
                     MainActivity.words = repositoryDB.readWordsFromDb(vocTypeString)
-
-
+                    activity?.supportFragmentManager?.popBackStack()
                 }
-                activity?.supportFragmentManager?.popBackStack()
-                FragmentWord.newInstance(vocTypeString)
-                Log.d("callFragmentEdit", "save")
-
             }
         })
     }
-
 
     companion object {
         const val KEY_PARSE_ID = "ID_WORD"
@@ -117,9 +97,7 @@ class FragmentEdit : Fragment() {
                     putString(KEY_PARSE_WORD, wordEditText)
                     putString(KEY_PARSE_VOC, vocEditText)
                     putString(KEY_PARSE_TYPE, vocType)
-
                 }
             }
     }
-
 }

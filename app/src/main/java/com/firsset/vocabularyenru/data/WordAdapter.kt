@@ -1,7 +1,6 @@
 package com.firsset.vocabularyenru.data
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +13,13 @@ import java.lang.String
 
 class WordAdapter(
     context: Context?,
-    listWordSummaries: List<Word>,
+    listWordSummaries: MutableList<Word>,
     itemClickListener: OnItemClickListener
 ) :
     RecyclerView.Adapter<WordAdapter.WordViewHolder>(),
     View.OnClickListener {
     private val inflater: LayoutInflater
-    var listWords: List<Word>
+    var listWords: MutableList<Word>
     var itemClickListener: OnItemClickListener
     var currentPos: Int = 0
 

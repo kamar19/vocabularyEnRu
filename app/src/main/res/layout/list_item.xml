@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
     android:orientation="horizontal"
-    android:textAlignment="textStart"
     android:padding="2dp">
 
     <TextView
@@ -14,25 +13,24 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:paddingStart="10dp"
-        android:textAlignment="textStart"
-        android:layout_gravity="start"
-        android:gravity="start" />
+        android:textAlignment="viewStart"
+        />
 
     <TextView
         android:id="@+id/wordListItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:textAlignment="textStart"
-        android:layout_gravity="start"
-        android:gravity="start" />
+        android:textAlignment="viewStart"
+        />
 
     <TextView
         android:id="@+id/vocListItem"
         android:layout_width="wrap_content"
-        android:textAlignment="textStart"
         android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:gravity="start" />
+        android:textAlignment="viewStart"
+
+         />
 
 </LinearLayout>

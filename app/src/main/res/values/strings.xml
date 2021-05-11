@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">vocabularyEnRu</string>
-    <string name="vocabulary_name">Англо-русский словарь!</string>
-    <string name="eng_voc">Англо-Русский словарь</string>
-    <string name="rus_voc">Русско-Английский словарь</string>
+    <string name="app_name">ITTerminology</string>
+    <string name="vocabulary_name">Словарь терминов и аббревиатур!</string>
+    <string name="eng_voc">На Английском языке</string>
+    <string name="rus_voc">На Русском языке</string>
     <string name="menu_exit">Выход</string>
     <string name="note">Поиск</string>
     <string name="letter">Буква</string>
