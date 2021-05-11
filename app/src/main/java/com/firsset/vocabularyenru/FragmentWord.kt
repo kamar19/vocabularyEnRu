@@ -50,7 +50,6 @@ class FragmentWord : Fragment(),
             this.savedInstanceState = savedInstanceState
         }
         retainInstance = true
-        Log.d("callFragmentEdit", "10")
 
 
     }
@@ -60,7 +59,6 @@ class FragmentWord : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         arguments?.let { vocType = it.getString(KEY_PARSE_DATA, "rus") }
-        Log.d("callFragmentEdit", "20")
 
         return inflater.inflate(R.layout.fragment_layout, container, false)
     }

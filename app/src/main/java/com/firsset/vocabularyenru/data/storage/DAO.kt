@@ -10,7 +10,7 @@ interface WordDAO {
     @Query("SELECT * FROM vocAll where vocType=:vocType")
     fun getAllWordsFromType(vocType:String): MutableList<Word>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWord(word: Word)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

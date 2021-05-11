@@ -94,21 +94,13 @@
             app:layout_constraintStart_toStartOf="@+id/id_fragment_layout"
             app:layout_constraintTop_toBottomOf="@+id/historyTextEditResult">
 
-            <TextView
-                android:id="@+id/idLetter"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_weight="0.2"
-                android:text="@string/letter"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/idWord"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="40dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.4"
                 android:text="@string/word_text"
                 android:textStyle="bold" />
 
@@ -116,7 +108,7 @@
                 android:id="@+id/idVoc"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
+                android:layout_weight="0.6"
                 android:gravity="start"
                 android:text="@string/voc_text"
                 android:textStyle="bold" />

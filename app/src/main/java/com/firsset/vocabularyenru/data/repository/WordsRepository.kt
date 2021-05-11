@@ -8,7 +8,6 @@ class WordRepository {
     private var words: MutableList<Word> = mutableListOf()
 
     init {
-        Log.d("callFragmentEdit_5", "repository")
         words.add(Word(152,"Flutter","is a set of Google user interface tools for building beautiful, source-compiled mobile, web, and desktop applications from a single code Flutter is a set of Google user interface tools for building beautiful, source-compiled mobile, web, and desktop applications from a single code base.","eng"))
         words.add(Word(154,"Флютер","Комплект средств разработки и фреймворк с открытым исходным кодом для создания мобильных приложений под Android и iOS, а также веб-приложений с использованием языка программирования Dart, разработанный и развиваемый корпорацией Google","rus"))
         words.add(Word(156,"Java","A strongly typed, general-purpose object-oriented programming language developed by Sun Microsystems","eng"))

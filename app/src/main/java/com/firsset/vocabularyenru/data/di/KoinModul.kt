@@ -1,11 +1,11 @@
 package com.firsset.vocabularyenru.data.di
 
-import com.firsset.vocabularyenru.data.storage.RepositoryDB
-import com.firsset.vocabularyenru.data.storage.WordDatabase
-import com.firsset.vocabularyenru.viewModelWord.ViewModelWordList
-import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.core.component.KoinApiExtension
-import org.koin.dsl.module
+//import com.firsset.vocabularyenru.data.storage.RepositoryDB
+//import com.firsset.vocabularyenru.data.storage.WordDatabase
+//import com.firsset.vocabularyenru.viewModelWord.ViewModelWordList
+//import org.koin.android.viewmodel.dsl.viewModel
+//import org.koin.core.component.KoinApiExtension
+//import org.koin.dsl.module
 
 //
 //@KoinApiExtension

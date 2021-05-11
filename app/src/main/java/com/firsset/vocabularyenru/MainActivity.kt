@@ -6,6 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import com.firsset.vocabul.FragmentWord
 import com.firsset.vocabularyenru.data.models.Word
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var wordDatabase: WordDatabase
     var vocType: String = "rus"
     var coroutineScope = CoroutineScope(Dispatchers.Main)
+    lateinit var   fragmentWord: FragmentWord
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,20 +37,20 @@ class MainActivity : AppCompatActivity() {
             saveIntoRep()
             findText = findViewById(R.id.descriptionAutoCompleteTextView)
             if (savedInstanceState == null) {
-                showFragmentOne()
+                fragmentWord=FragmentWord.newInstance(vocType)
+                showFragmentOne(vocType)
             }
         }
     }
-    fun showFragmentOne() {
+    fun showFragmentOne(vocType :String ) {
         supportFragmentManager.commitNow {
             replace(
                 R.id.main_layout,
-                FragmentWord.newInstance(vocType),
+                fragmentWord,
                 FRAGMENT_ONE
             )
         }
     }
-
 
     fun saveIntoRep() {
         if (words != null) {
@@ -55,14 +58,12 @@ class MainActivity : AppCompatActivity() {
                 var tempWords: List<Word>? = null
                 var workRep: WordRepository = WordRepository()
                 tempWords = workRep.getWordList()
-                Log.d("callFragmentEdit", "words is not db = " + tempWords?.size.toString())
                 words!!.addAll(tempWords)
                 coroutineScope.launch {
                     words?.let { repositoryDB.saveWordsToDB(it) }
                 }
             } else {
                 words?.let {
-                    Log.d("callFragmentEdit", "words in db  = " + it.size.toString())
                 }
             }
         }
@@ -73,11 +74,29 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    fun updateAdapter(){
+        if (vocType.equals("rus")) {
+            fragmentWord.imageView2.setBackgroundResource(R.drawable.rus)
+        } else {
+            fragmentWord.imageView2.setBackgroundResource(R.drawable.eng)
+        }
+        coroutineScope.launch {
+            words = repositoryDB.readWordsFromDb(vocType)
+            fragmentWord.adapter?.listWords = MainActivity.words!!
+            fragmentWord.adapter?.notifyDataSetChanged()
+        }
+
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuEng -> {
+                vocType="eng"
+                updateAdapter()
             }
             R.id.menuRus -> {
+                vocType="rus"
+                updateAdapter()
             }
             R.id.menuExit -> finish()
         }
@@ -96,6 +115,18 @@ class MainActivity : AppCompatActivity() {
         val FRAGMENT_ONE = "FRAGMENT_ONE"
         var words: MutableList<Word>? = null
     }
+    fun updateFragmentWord() {
+            supportFragmentManager.popBackStack(
+                FRAGMENT_ONE,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
+            supportFragmentManager.commit {
+                addToBackStack(FRAGMENT_ONE)
+                replace(R.id.main_layout, FragmentWord.newInstance(vocType))
+            }
+
+    }
+
 }
 
 

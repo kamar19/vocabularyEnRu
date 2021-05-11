@@ -59,18 +59,18 @@ class WordAdapter(
 
     inner class WordViewHolder internal constructor(view: View) :
         RecyclerView.ViewHolder(view) {
-        val letterListItem: TextView
+//        val letterListItem: TextView
         val wordListItem: TextView
         val vocListItem: TextView
 
         init {
-            letterListItem = view.findViewById(R.id.letterListItem)
+//            letterListItem = view.findViewById(R.id.letterListItem)
             wordListItem = view.findViewById(R.id.wordListItem)
             vocListItem = view.findViewById(R.id.vocListItem)
         }
 
         fun bind(wordSummary: Word) {
-            letterListItem.setText(String.valueOf(wordSummary.word.get(0).toUpperCase()))
+//            letterListItem.setText(String.valueOf(wordSummary.word.get(0).toUpperCase()))
             wordListItem.setText(wordSummary.word)
             vocListItem.setText(wordSummary.transfer)
             currentPos = wordSummary.id

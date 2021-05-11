@@ -9,6 +9,10 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
+import com.firsset.vocabul.FragmentWord
+import com.firsset.vocabularyenru.MainActivity.Companion.FRAGMENT_ONE
 import com.firsset.vocabularyenru.data.models.Word
 import com.firsset.vocabularyenru.data.storage.RepositoryDB
 import com.firsset.vocabularyenru.data.storage.WordDatabase
@@ -48,6 +52,25 @@ class FragmentEdit : Fragment() {
         return inflater.inflate(R.layout.fragment_edit, container, false)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        super.onDestroyView()
+        showFragmentWord()
+    }
+
+    fun showFragmentWord() {
+        activity?.let {
+            it.supportFragmentManager.popBackStack(
+                FRAGMENT_ONE,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
+            it.supportFragmentManager.commit {
+                addToBackStack(FRAGMENT_ONE)
+                replace(R.id.main_layout, FragmentWord.newInstance(vocTypeString))
+            }
+        }
+    }
+
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?
@@ -59,8 +82,7 @@ class FragmentEdit : Fragment() {
         vocEditText.setText(vocEditString)
         wordDatabase = WordDatabase.createWordDatabaseInstance(view.context)
         repositoryDB = RepositoryDB(wordDatabase)
-
-        if (idWord > 0) {
+        if (idWord >= 0) {
             buttonSave.visibility = View.VISIBLE
         } else {
             buttonSave.visibility = View.INVISIBLE
@@ -79,7 +101,7 @@ class FragmentEdit : Fragment() {
                     )
                     repositoryDB.saveWordToDB(tempWord)
                     MainActivity.words = repositoryDB.readWordsFromDb(vocTypeString)
-                    activity?.supportFragmentManager?.popBackStack()
+                    showFragmentWord()
                 }
             }
         })
